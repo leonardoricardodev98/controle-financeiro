@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Controle Financeiro</title>
+</head>
+<body>
+
+<h1>Sistema Financeiro 🚀</h1>
+
+<h2>Adicionar Gasto</h2>
+
+<form action="/adicionar" method="post">
+
+    Nome do gasto:
+    <input type="text" name="nome">
+
+    <br> <br>
+
+    Valor:
+    <input type="number" name="valor">
+
+    <br> <br>
+
+    <button type="submit">Adicionar</button>
+
+
+</form>
+
+    <h2>Lista de Gastos</h2>
+
+    <ul>
+    <li th:each="g, stat : ${gastos}">
+        <span th:text="${g}"></span>
+
+        <form action="/remover" method="post" style="display:inline;">
+            <input type="hidden" name="index" th:value="${stat.index}" />
+            <button type="submit">Remover</button>
+        </form>
+    </li>
+    </ul>
+
+</body>
+</html>
