@@ -11,33 +11,37 @@
 
 <form action="/adicionar" method="post">
 
-    Nome do gasto:
-    <input type="text" name="nome">
+    <input type="text" name="nome" placeholder="Nome do gasto" required />
 
-    <br> <br>
+    <input type="number" step="0.01" name="valor" placeholder="Valor" required />
 
-    Valor:
-    <input type="number" name="valor">
+    <input type="text" name="categoria" placeholder="Categoria" required />
 
-    <br> <br>
+    <select name="tipo">
+        <option value="ENTRADA">Entrada</option>
+        <option value="SAIDA">Saída</option>
+    </select>
+
+    <input type="date" name="data" required />
 
     <button type="submit">Adicionar</button>
 
-
 </form>
 
-    <h2>Lista de Gastos</h2>
+<h2>Lista de Gastos</h2>
 
-    <ul>
-    <li th:each="g, stat : ${gastos}">
-        <span th:text="${g}"></span>
+<ul>
+    <li th:each="g : ${gastos}">
+        <span th:text="${g.nome}"></span>
+        -
+        <span th:text="${g.valor}"></span>
 
-        <form action="/remover" method="post" style="display:inline;">
-            <input type="hidden" name="index" th:value="${stat.index}" />
+        <form action="/remover" method="post">
+            <input type="hidden" name="id" th:value="${g.id}" />
             <button type="submit">Remover</button>
         </form>
     </li>
-    </ul>
+</ul>
 
 </body>
 </html>

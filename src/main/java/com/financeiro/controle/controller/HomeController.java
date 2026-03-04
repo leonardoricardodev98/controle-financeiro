@@ -7,40 +7,52 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
+import com.financeiro.controle.repository.GastoRepository;
+import com.financeiro.controle.model.Gasto;
 
 
 
 @Controller
 public class HomeController {
 
-    private List<String> gastos = new ArrayList<>();
+    private final GastoRepository gastoRepository;
+
+    public HomeController(GastoRepository gastoRepository) {
+        this.gastoRepository = gastoRepository;
+    }
+
+
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("gastos", gastos);
+        model.addAttribute("gastos", gastoRepository.findAll());
         return "home";
     }
 
     @PostMapping("/adicionar")
     public String adicionar(@RequestParam String nome,
                             @RequestParam double valor,
-                            Model model) {
+                            @RequestParam String categoria,
+                            @RequestParam String tipo,
+                            @RequestParam String data) {
 
-        gastos.add(nome + " - R$ " + valor);
+        Gasto gasto = new Gasto();
+        gasto.setNome(nome);
+        gasto.setValor(valor);
+        gasto.setCategoria(categoria);
+        gasto.setTipo(tipo);
+        gasto.setData(data);
 
-        model.addAttribute("gastos", gastos);
+        gastoRepository.save(gasto);
 
-        return "home";
+        return "redirect:/";
     }
 
     @PostMapping("/remover")
-    public String remover(@RequestParam int index, Model model) {
+    public String remover(@RequestParam Long id) {
 
-        if(index >= 0 && index < gastos.size()) {
-            gastos.remove(index);
-        }
+        gastoRepository.deleteById(id);
 
-        model.addAttribute("gastos", gastos);
-        return "home";
+        return "redirect:/";
     }
 }
