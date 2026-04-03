@@ -1,0 +1,153 @@
+body{
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background:#f5f6fa;
+    overflow-x: hidden;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    overflow-x: hidden;
+}
+
+canvas{
+    max-width: 100%;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    border-collapse:collapse;
+    margin-top:30px;
+    background:white;
+    overflow-x: auto;
+}
+
+th, td{
+    border: 1px solid #ccc;
+    border-bottom:1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th{
+    background-color: #f0f0f0;
+    color:#333;
+}
+
+tr:hover{
+background:#f2f2f2;
+}
+
+tr:nth-child(even){
+    background-color: #f9f9f9;
+}
+
+button{
+    background:#3498db;
+    background-color: #2d89ef;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+background:#2980b9;
+background-color: #1b5fa7;
+transform:scale(1.05);
+}
+
+.cards{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.card{
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 180px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+    flex: 1;
+}
+
+.card h3{
+    margin: 0;
+    font-size: 18px;
+}
+
+.card p{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.entrada{
+background:#2ecc71;
+border-left: 6px solid green;
+}
+
+.saida{
+background:#e74c3c;
+border-left: 6px solid red;
+
+}
+
+.saldo{
+background:#3498db;
+border-left: 6px solid blue;
+}
+
+.saldo{
+    background-color: #3498db;
+}
+
+.grafico-container{
+    width: 350px;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.graficos{
+display:flex;
+gap:40px;
+margin-bottom:30px;
+margin-top: 20px;
+flex-wrap: wrap;
+}
+
+.graficos canvas{
+    width: 350px;
+    height: 200px;
+}
+
+.grafico-box{
+    width: 350px;
+    height: 220px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+input, select{
+padding:8px;
+margin:5px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+form{
+margin-bottom:20px;
+}
+
+.grafico-mes{
+    width: 400px;
+    height: 250px;
+}

@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Controle Financeiro</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -28,20 +30,168 @@
 
 </form>
 
-<h2>Lista de Gastos</h2>
+<h2>Filtrar por mês</h2>
 
-<ul>
-    <li th:each="g : ${gastos}">
-        <span th:text="${g.nome}"></span>
-        -
-        <span th:text="${g.valor}"></span>
+<form method="get" action="/">
 
-        <form action="/remover" method="post">
-            <input type="hidden" name="id" th:value="${g.id}" />
-            <button type="submit">Remover</button>
-        </form>
-    </li>
-</ul>
+    <input type="month" name="mes">
+
+    <button type="submit">Filtrar</button>
+
+</form>
+
+<h2>Gastos por Mês</h2>
+
+<div class="grafico-mes">
+    <canvas id="graficoMes"></canvas>
+</div>
+
+<h2>Resumo Financeiro</h2>
+
+<div class="cards">
+
+    <div class="card entrada">
+        <h3>Entradas</h3>
+        <p th:text="'R$ ' + ${#numbers.formatDecimal(entradas,1,'POINT',2,'COMMA')}"></p>
+    </div>
+
+    <div class="card saida">
+        <h3>Saídas</h3>
+        <p th:text="'R$ ' + ${#numbers.formatDecimal(saidas,1,'POINT',2,'COMMA')}"></p>
+    </div>
+
+    <div class="card saldo">
+        <h3>Saldo</h3>
+        <p th:text="'R$ ' + ${#numbers.formatDecimal(saldo,1,'POINT',2,'COMMA')}"></p>
+    </div>
+
+</div>
+
+<h2>Gráficos</h2>
+
+<div class="graficos">
+
+    <div class="grafico-box">
+        <canvas id="graficoFinanceiro"></canvas>
+    </div>
+
+    <div class="grafico-box">
+        <canvas id="graficoCategoria"></canvas>
+    </div>
+
+</div>
+
+<table>
+
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Valor</th>
+        <th>Categoria</th>
+        <th>Tipo</th>
+        <th>Data</th>
+        <th>Ação</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="g : ${gastos}">
+        <td th:text="${g.nome}"></td>
+        <td th:text="'R$ ' + ${#numbers.formatDecimal(g.valor,1,'POINT',2,'COMMA')}"></td>
+        <td th:text="${g.categoria}"></td>
+        <td th:text="${g.tipo}"
+            th:style="${g.tipo == 'ENTRADA'} ? 'color:green' : 'color:red'"></td>
+        <td th:text="${g.data}"></td>
+
+        <td>
+
+            <a th:href="@{/editar(id=${g.id})}">
+                <button>Editar</button>
+            </a>
+
+            <form action="/remover" method="post">
+                <input type="hidden" name="id" th:value="${g.id}" />
+                <button type="submit">Remover</button>
+            </form>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+<h2>Total: R$ <span th:text="${total}"></span></h2>
+
+<script th:inline="javascript">
+
+    const mesesNumeros = [[${meses}]];
+    const valoresMeses = [[${valoresMeses}]];
+    const categorias = [[${categorias}]];
+    const valoresCategorias = [[${valoresCategorias}]];
+    const entradas = [[${entradas}]];
+    const saidas = [[${saidas}]];
+
+    const nomesMeses = {
+    "01":"Jan","02":"Fev","03":"Mar","04":"Abr","05":"Mai","06":"Jun",
+    "07":"Jul","08":"Ago","09":"Set","10":"Out","11":"Nov","12":"Dez"
+    };
+
+    const meses = mesesNumeros.map(m => nomesMeses[m]);
+
+    const ctxMes = document.getElementById('graficoMes');
+    const ctxCategoria = document.getElementById('graficoCategoria');
+    const ctxFinanceiro = document.getElementById('graficoFinanceiro');
+
+    new Chart(ctxMes,{
+    type:'bar',
+    data:{
+    labels:meses,
+    datasets:[{
+    label:'Gastos por mês',
+    data:valoresMeses,
+    backgroundColor:'#3498db'
+    }]
+    },
+    options:{
+    responsive:true,
+    maintainAspectRatio:false
+    }
+    });
+
+    new Chart(ctxCategoria,{
+    type:'pie',
+    data:{
+    labels:categorias,
+    datasets:[{
+    data:valoresCategorias
+    }]
+    },
+    options:{
+    responsive:true,
+    maintainAspectRatio:false
+    }
+    });
+
+    new Chart(ctxFinanceiro,{
+    type:'bar',
+    data:{
+    labels:['Entradas','Saídas'],
+    datasets:[{
+    label:'Resumo Financeiro',
+    data:[entradas,saidas],
+    backgroundColor:['green','red']
+    }]
+    },
+    options:{
+    responsive:true,
+    maintainAspectRatio:false
+    }
+    });
+
+</script>
 
 </body>
 </html>
